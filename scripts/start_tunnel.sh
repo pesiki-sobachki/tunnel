@@ -1,23 +1,12 @@
 #!/bin/bash
-# --- Настройки (измените под свой проект) ---
-REMOTE_USER="tunneluser"
-REMOTE_HOST="IP_АДРЕС_ВАШЕЙ_REMOTE_VM"  # <-- ВАЖНО: Замените это
-REMOTE_PORT="8080"
-DEFAULT_LOCAL_PORT="3000"
-# --------------------------------------------------
 
-LOCAL_PORT=${1:-$DEFAULT_LOCAL_PORT}
+REMOTE_USER="user"
+REMOTE_HOST="REMOTE_IP"
+REMOTE_PORT="REMOTE_PORT"
+LOCAL_PORT="LOCAL_PORT"
 
 echo "🚀 Запускаем SSH-туннель..."
-echo "--------------------------------------------------"
-echo "Удаленный сервер : ${REMOTE_USER}@${REMOTE_HOST}"
-echo "Трафик с порта  : ${REMOTE_PORT} (на удаленном сервере)"
-echo "Будет направлен на: ${LOCAL_PORT} (на вашей локальной машине)"
-echo "--------------------------------------------------"
-echo "Нажмите Ctrl+C для остановки туннеля."
-echo ""
+echo "${REMOTE_USER}@${REMOTE_HOST}, удаленный порт: ${REMOTE_PORT} --> локальный: ${LOCAL_PORT}"
 
-autossh -M 0 \
-    -o "ServerAliveInterval=30" \
-    -o "ServerAliveCountMax=3" \
+autossh -M 0 -o "ServerAliveInterval=30" -o "ServerAliveCountMax=3" \
     -R ${REMOTE_PORT}:localhost:${LOCAL_PORT} ${REMOTE_USER}@${REMOTE_HOST}
